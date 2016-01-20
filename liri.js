@@ -44,27 +44,43 @@ function spotify () {
 
 	var spotify = require ('spotify');
 
-	spotify.search({ type: 'track', query: args[1] }, function(err, data) {
-		if ( err ) {
-			console.log('An error occurred: ' + err);
-			return;
-		}
+	if (args[1] === undefined) {
+		spotify.search({type: "track", query: "What's My Age Again?" }, function(err, data) {
+			if ( err ) {
+				console.log('Error: ' + err);
+				return;
+			}
+			else {			
+				console.log(data.tracks.items[0].artists[0].name);
+				console.log(data.tracks.items[0].name);
+				console.log(data.tracks.items[0].artists[0].external_urls.spotify);
+				console.log(data.tracks.items[0].album.name);
+			}
 
-		else {
-			console.log(data.tracks.items[0].artists[0].name);
-			console.log(data.tracks.items[0].name);
-			console.log(data.tracks.items[0].artists[0].external_urls.spotify);
-			console.log(data.tracks.items[0].album.name);
-		}
+		})
+	}
+	else {
+		spotify.search({ type: 'track', query: args[1] }, function(err, data) {
+			if ( err ) {
+				console.log('Error: ' + err);
+				return;
+			}
 
-	});
-};
+			else {
+				console.log(data.tracks.items[0].artists[0].name);
+				console.log(data.tracks.items[0].name);
+				console.log(data.tracks.items[0].artists[0].external_urls.spotify);
+				console.log(data.tracks.items[0].album.name);
+      		}
+    	});
+  	}
+}
 
 function movie () {
 
 	var request = require('request');
 
-	  if (args[1] === undefined){
+	if (args[1] === undefined) {
     	request("http://www.omdbapi.com/?t=Mr+Nobody&y=&plot=short&r=json", function (error, response, body) {
       		if (!error && response.statusCode == 200) {
         		console.log(JSON.parse(body).Title);
@@ -74,4 +90,40 @@ function movie () {
         		console.log(JSON.parse(body).Language);
         		console.log(JSON.parse(body).Plot);
         		console.log(JSON.parse(body).Actors);
+			}
+    	})
+	  }
+	  else {
+	    request("http://www.omdbapi.com/?t=" + args[1] + "&y=&plot=short&r=json", function (error, response, body) {
+	      if (!error && response.statusCode == 200) {
+        		console.log(JSON.parse(body).Title);
+        		console.log(JSON.parse(body).Year);
+        		console.log(JSON.parse(body).imdbRating);
+        		console.log(JSON.parse(body).Country);
+        		console.log(JSON.parse(body).Language);
+        		console.log(JSON.parse(body).Plot);
+        		console.log(JSON.parse(body).Actors);
+	      }
+    	})
+  	}
 }
+
+
+// function doItUp () {
+// // function to take the text inside of random.txt and use it to call the first command with the second part as it’s parameter
+
+// // couldn't figure this out -- will revisit
+
+// 	var fs = require("fs");
+
+// 	fs.readFile('random.txt', "utf8", function(err, data) {
+//     	if (err){
+//       	console.log(err);
+//     }
+//     }
+//   })
+
+
+	
+
+// }
